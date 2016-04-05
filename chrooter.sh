@@ -1,5 +1,5 @@
 #/bin/bash                                                                                                                                            
-# manage chroot environment                                                                                                                           
+# manage chroot environment on ubuntu                                                                                                                        
 #                                                                                                                                                     
 
 function bootstrap {
@@ -32,7 +32,7 @@ function do_chroot {
   chroot $isolroot
 }
 
-isolroot=${2:-"/data/mnt/isolroot"}
+isolroot=${2:-"~/isolroot"}
 opts="-b bootstrap a new root in $isolroot\n-m mount fs in $isolroot\n-u umount fs in $isolroot\n-c chroot into $isolroot"
 while getopts "bmuc" opt; do
   case $opt in
