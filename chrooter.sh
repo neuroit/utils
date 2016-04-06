@@ -28,6 +28,13 @@ function umountchroot {
      umount $isolroot/dev
 }
 
+
+function gen_local {
+ chroot $isolroot
+ locale-gen  en_US.UTF-8
+ dpkg-reconfigure locales
+}
+
 function do_chroot {
   chroot $isolroot
 }
@@ -40,6 +47,8 @@ while getopts "bmuc" opt; do
   case $opt in
     b)
       bootstrap
+      mountchroot
+      gen_local
       ;;
     m)
       mountchroot
