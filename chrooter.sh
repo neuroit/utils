@@ -52,7 +52,7 @@ while getopts "bmuc" opt; do
       ;;
    \?)
       echo -e "\noptions:\n$opts\n"
-      echo -e "usage:\n    chrooter.sh <option> <abs_path> <installed ubuntu version>"
+      echo -e "usage:\n    chrooter.sh <option> <path to new root> <ubuntu version to install>"
       exit 1
       ;;
   esac
