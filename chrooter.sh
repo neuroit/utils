@@ -4,11 +4,11 @@
 
 function bootstrap {
     if [ ! -d $isolroot ]; then
-        echo "Create: $isolroot"
+        echo "Creating $isolroot"
         mkdir $isolroot
-        apt-get debootstrap
-        isolroot=/mnt/data/isol
-        mkdir $isolroot
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update -q
+        apt-get install -q -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" debootstrap
         debootstrap $ubuntu_version $isolroot
     else
         echo "Directory $isolroot exists already. Choose another one."
@@ -32,7 +32,9 @@ function do_chroot {
   chroot $isolroot
 }
 
-isolroot=${2:-"~/isolroot"}
+isolroot=${2:-"/isolroot"}
+ubuntu_version=${3:-"trusty"}
+
 opts="-b bootstrap a new root in $isolroot\n-m mount fs in $isolroot\n-u umount fs in $isolroot\n-c chroot into $isolroot"
 while getopts "bmuc" opt; do
   case $opt in
@@ -49,8 +51,8 @@ while getopts "bmuc" opt; do
       do_chroot
       ;;
    \?)
-      echo -e "option unknown.\n"
-      echo -e $opts
+      echo -e "\noptions:\n$opts\n"
+      echo -e "usage:\n    chrooter.sh <option> <abs_path> <installed ubuntu version>"
       exit 1
       ;;
   esac
