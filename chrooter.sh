@@ -29,10 +29,8 @@ function umountchroot {
 }
 
 
-function gen_local {
- chroot $isolroot
- locale-gen  en_US.UTF-8
- dpkg-reconfigure locales
+function post_strap {
+ chroot $isolroot /bin/bash -c "locale-gen  en_US.UTF-8 && dpkg-reconfigure locales"
 }
 
 function do_chroot {
@@ -48,7 +46,7 @@ while getopts "bmuc" opt; do
     b)
       bootstrap
       mountchroot
-      gen_local
+      post_strap
       ;;
     m)
       mountchroot
